@@ -147,12 +147,7 @@ struct TerapiasContent: View {
         .background(Color.white)
         .cornerRadius(30)
         
-        /*.onDisappear() {
-            // Reiniciar las banderas globales al desaparecer la vista
-            globalState.terapiaCompletaSelected = false
-            globalState.terapiaSimplificadaSelected = false
-            globalState.terapiaLibreSelected = false
-        }*/
+     
     }
 }
 struct TerapiasView_Previews: PreviewProvider {

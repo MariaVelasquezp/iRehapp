@@ -37,7 +37,7 @@ struct ManoSimpContent: View {
                     VideoPlayer(player: player)
                         .frame(width: 330, height: 185)
                         .cornerRadius(10)
-                        .padding(.top, isBackgroundWhite ? 70 : 20) // Ajustar la posición del video
+                        .padding(.top, isBackgroundWhite ? 70 : 200) // Ajustar la posición del video
                         .padding(.bottom, isBackgroundWhite ? 0 : 70) // Ajustar la posición del video
                         .onTapGesture {
                             withAnimation {
