@@ -64,7 +64,7 @@ struct ManoLibreContent: View {
                     Button(action: {
                         isExerciseFinished = true
                     }) {
-                        Text("Siguiente ejercicio")
+                        Text("Menu de ejercicios")
                             .font(.custom("Sarabun", size: 16))
                             .foregroundColor(Color.white)
                             .fontWeight(.bold)
