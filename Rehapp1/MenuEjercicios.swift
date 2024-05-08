@@ -41,6 +41,7 @@ struct MenuEjercicios: View {
     @State private var navigateToManoLibre = false
     @Binding var stimParams: StimParameters
     @ObservedObject var module: DiscoveredPeripheral
+    @EnvironmentObject var bleManager: BluetoothManager
     
     var body: some View {
         ZStack {
@@ -96,6 +97,7 @@ struct MenuEjercicios: View {
                     HStack(spacing: 20) {
                         VStack {
                             Button(action: {
+                                self.navigateToAnular = true
                                 let newFrequency: UInt8 = 0x04 // Definir la nueva frecuencia deseada aquí
                                     module.updateFrequency(new_frequency: newFrequency)
                                    self.stimParams.frequency = 0x04 // Actualizar stimParams.frequency
@@ -113,7 +115,7 @@ struct MenuEjercicios: View {
                         VStack {
                             Button(action: {
                                 self.navigateToMeñique = true
-                                let newFrequency: UInt8 = 0x08 // Definir la nueva frecuencia deseada aquí
+                                let newFrequency: UInt8 = 0x08 
                                     module.updateFrequency(new_frequency: newFrequency)
                                 self.stimParams.frequency = 0x08
                             }) {
@@ -156,6 +158,7 @@ struct MenuEjercicios: View {
                         let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
                             module.updateFrequency(new_frequency: newFrequency)
                         self.stimParams.frequency = 0x00
+                        bleManager.disconnectFromDevice(module: module)
                     }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -166,7 +169,7 @@ struct MenuEjercicios: View {
                         }
                     }
                     .fullScreenCover(isPresented: $isDeviceListPresented) {
-                        //DeviceList( stimParams: StimParameters)
+                        DeviceList(stimParams: self.$stimParams)
                     }
                     
                     Button(action: {
@@ -196,19 +199,19 @@ struct MenuEjercicios: View {
             .padding(30)
         }
         .fullScreenCover(isPresented: $navigateToIndice) {
-            IndiceLibreContent()
+            IndiceLibreContent(stimParams: self.$stimParams, module: module)
         }
         .fullScreenCover(isPresented: $navigateToCorazon) {
-            MedioLibreContent()
+            MedioLibreContent(stimParams: self.$stimParams, module: module)
         }
         .fullScreenCover(isPresented: $navigateToAnular) {
-            AnularLibreContent()
+            AnularLibreContent(stimParams: self.$stimParams, module: module)
         }
         .fullScreenCover(isPresented: $navigateToMeñique) {
-            MeniqueLibreContent()
+            MeniqueLibreContent(stimParams: self.$stimParams, module: module)
         }
         .fullScreenCover(isPresented: $navigateToMano) {
-            ManoLibreContent()
+            ManoLibreContent(stimParams: self.$stimParams, module: module)
         }
     }
     

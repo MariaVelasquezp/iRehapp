@@ -10,6 +10,8 @@ import SwiftUI
 import AVKit
 
 struct MeniqueLibreContent: View {
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
     @State private var isExerciseFinished = false
     @State private var isTextVisible = true
     @State private var isBackgroundWhite = true
@@ -74,7 +76,9 @@ struct MeniqueLibreContent: View {
                     
                     HStack(spacing: 0) {
                         Button(action: {
-                            // Acción al detener
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Detener")
                                 .font(.custom("Sarabun", size: 20))
@@ -90,6 +94,9 @@ struct MeniqueLibreContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Menu de ejercicios")
                                 .font(.custom("Sarabun", size: 16))
@@ -100,7 +107,7 @@ struct MeniqueLibreContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                   //         MenuEjercicios()
+                            MenuEjercicios(stimParams: self.$stimParams, module: module)
                         }
                         .padding(.bottom, 40)
                     }
@@ -114,12 +121,16 @@ struct MeniqueLibreContent: View {
         .onAppear {
             player.play()
         }
+        .onReceive([self.stimParams.frequency].publisher.first()) { newFrequency in
+            let sendingFrequency = getMinValue(for: newFrequency)
+            print("Sending frequency: 0x\(String(format: "%02X", sendingFrequency))")
+        }
     }
 }
 
 
-struct MeniqueLibreContentView_Previews: PreviewProvider {
+/*struct MeniqueLibreContentView_Previews: PreviewProvider {
     static var previews: some View {
         MeniqueLibreContent()
     }
-}
+}*/

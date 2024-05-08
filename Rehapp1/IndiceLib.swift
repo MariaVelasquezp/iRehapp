@@ -11,6 +11,8 @@ import AVKit
 
 struct IndiceLibreContent: View {
     @State private var isExerciseFinished = false
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
     @State private var isTextVisible = true
     @State private var isBackgroundWhite = true
     @State private var player = AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "INDICE", ofType: "mp4")!))
@@ -74,7 +76,9 @@ struct IndiceLibreContent: View {
                     
                     HStack(spacing: 0) {
                         Button(action: {
-                            // Acción al detener
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Detener")
                                 .font(.custom("Sarabun", size: 20))
@@ -90,6 +94,9 @@ struct IndiceLibreContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Menu de ejercicios")
                                 .font(.custom("Sarabun", size: 16))
@@ -100,7 +107,7 @@ struct IndiceLibreContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                         //   MenuEjercicios()
+                            MenuEjercicios(stimParams: self.$stimParams, module: module)
                         }
                         .padding(.bottom, 40)
                     }
@@ -114,11 +121,15 @@ struct IndiceLibreContent: View {
         .onAppear {
             player.play()
         }
+        .onReceive([self.stimParams.frequency].publisher.first()) { newFrequency in
+            let sendingFrequency = getMinValue(for: newFrequency)
+            print("Sending frequency: 0x\(String(format: "%02X", sendingFrequency))")
+        }
     }
 }
 
-struct IndiceLibreContentView_Previews: PreviewProvider {
+/*struct IndiceLibreContentView_Previews: PreviewProvider {
     static var previews: some View {
-        IndiceLibreContent()
+        IndiceLibreContent(stimParams: self.$stimParams, module: module)
     }
-}
+}*/

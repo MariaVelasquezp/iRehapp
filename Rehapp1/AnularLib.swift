@@ -10,6 +10,8 @@ import SwiftUI
 import AVKit
 
 struct AnularLibreContent: View {
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
     @State private var isExerciseFinished = false
     @State private var isTextVisible = true
     @State private var isBackgroundWhite = true
@@ -37,8 +39,8 @@ struct AnularLibreContent: View {
                     VideoPlayer(player: player)
                         .frame(width: 330, height: 185)
                         .cornerRadius(10)
-                        .padding(.top, isBackgroundWhite ? 70 : 200) // Ajustar la posición del video
-                        .padding(.bottom, isBackgroundWhite ? 0 : 70) // Ajustar la posición del video
+                        .padding(.top, isBackgroundWhite ? 70 : 200)
+                        .padding(.bottom, isBackgroundWhite ? 0 : 70)
                         .onTapGesture {
                             withAnimation {
                                 isTextVisible.toggle()
@@ -67,14 +69,16 @@ struct AnularLibreContent: View {
                                 .padding(.top, -30)
                         }
                     }
-                    .transition(.opacity) // Agregar transición de opacidad al texto
+                    .transition(.opacity)
                     
                     Spacer()
                     
                     
                     HStack(spacing: 0) {
                         Button(action: {
-                            // Acción al detener
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Detener")
                                 .font(.custom("Sarabun", size: 20))
@@ -90,6 +94,9 @@ struct AnularLibreContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
+                            let newFrequency: UInt8 = 0x00 
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Menu de ejercicios")
                                 .font(.custom("Sarabun", size: 16))
@@ -100,7 +107,7 @@ struct AnularLibreContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                        //    MenuEjercicios()
+                            MenuEjercicios(stimParams: self.$stimParams, module: module)
                         }
                         .padding(.bottom, 40)
                     }
@@ -114,11 +121,15 @@ struct AnularLibreContent: View {
         .onAppear {
             player.play()
         }
+        .onReceive([self.stimParams.frequency].publisher.first()) { newFrequency in
+            let sendingFrequency = getMinValue(for: newFrequency)
+            print("Sending frequency: 0x\(String(format: "%02X", sendingFrequency))")
+        }
     }
 }
 
-struct AnularLibreContentView_Previews: PreviewProvider {
+/*struct AnularLibreContentView_Previews: PreviewProvider {
     static var previews: some View {
         AnularLibreContent()
     }
-}
+}*/
