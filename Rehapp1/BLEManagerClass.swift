@@ -12,13 +12,12 @@ import CoreBluetooth
 private struct ModuleUUIDs {
     static let ModuleParamsService = CBUUID(string: "00000000-0000-1000-8000-00805F9B34F0")
     static let ledCharactersticUUID = CBUUID(string:"00000000-0000-1000-8000-00805F9B34F1")
-    static let CurrentCharactersticUUID = CBUUID(string:"00000000-0000-1000-8000-00805F9B34F2")
 }
 
 
 struct StimParameters:Equatable {
     var led: UInt16 = 0
-    var current: UInt8 = 0
+   // var current: UInt8 = 0
     var frequency: Int = 0
 }
 
@@ -65,9 +64,7 @@ class DiscoveredPeripheral: NSObject, CBPeripheralDelegate, ObservableObject {
     @Published var updateFreshness : UpdateFreshness = UpdateFreshness()
     
     private var moduleService: CBService?
-    //private var moduleUptimeCharacteristic: CBCharacteristic?
     private var moduleCurrentCharacteristic: CBCharacteristic?
-    //private var modulePeriodCharacteristic: CBCharacteristic?
     internal var ledCharacteristic: CBCharacteristic?
 
     
@@ -123,8 +120,6 @@ class DiscoveredPeripheral: NSObject, CBPeripheralDelegate, ObservableObject {
 //            print("Found characteristic: \(characteristic)")
             
             switch characteristic.uuid {
-            case ModuleUUIDs.CurrentCharactersticUUID:
-                moduleCurrentCharacteristic = characteristic
             case ModuleUUIDs.ledCharactersticUUID:
                 ledCharacteristic = characteristic
             default:
@@ -140,25 +135,18 @@ class DiscoveredPeripheral: NSObject, CBPeripheralDelegate, ObservableObject {
             print("Not sure how we got here.")
             return
         }
-        guard let ledCharacteristic = ledCharacteristic,
-              let currentCharacteristic = moduleCurrentCharacteristic else {
-            print("Error: one of our characteristics is is nil")
+        guard let ledCharacteristic = ledCharacteristic else {
+            print("Error: ledCharacteristic is nil")
             return
         }
         
-        if (!dataFreshness.current) {
-            peripheral.readValue(for: currentCharacteristic)
-            scanningState = ScanningState.retrieving_characteristics
-        }
-        else if (!dataFreshness.led) {
+        if (!dataFreshness.led) {
             peripheral.readValue(for: ledCharacteristic)
             scanningState = ScanningState.retrieving_characteristics
         }
     }
     
     func requery_module() {
-        //dataFreshness.uptime = false;
-        dataFreshness.current = false;
         dataFreshness.led = false;
         
         queryModuleData()
@@ -172,14 +160,6 @@ class DiscoveredPeripheral: NSObject, CBPeripheralDelegate, ObservableObject {
         print("Value recevied for characteristic: \(characteristic)")
 
         switch characteristic.uuid {
-        case ModuleUUIDs.CurrentCharactersticUUID:
-            guard let bytedata = data.first else {
-                print("No data received for current")
-                return
-            }
-            stimParameters.current = bytedata
-            print(stimParameters.current)
-            dataFreshness.current = true;
 
         case ModuleUUIDs.ledCharactersticUUID:
             guard data.count == 1 else {
@@ -226,41 +206,16 @@ class DiscoveredPeripheral: NSObject, CBPeripheralDelegate, ObservableObject {
         updateFreshness.led = false
     }
     
-    func updateCurrent(new_current: UInt8) {
-        guard connectionState == ConnectionState.connected else {
-            print("Not sure how we got here.")
-            return
-        }
-        guard let currentCharacteristic = moduleCurrentCharacteristic else {
-            print("Error: current characteristic is nil")
-            return
-        }
-        
-        var value = new_current
-        
-        let ns = NSData(bytes: &value, length: MemoryLayout<UInt8>.size)
-        peripheral.writeValue(ns as Data, for: currentCharacteristic, type: .withResponse)
-        
-        updateFreshness.current = false
-    }
-    
-    
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         print("Value recevied for characteristic: \(characteristic)")
 
         switch characteristic.uuid {
-        case ModuleUUIDs.CurrentCharactersticUUID:
-            updateFreshness.current = true;
-
         case ModuleUUIDs.ledCharactersticUUID:
             updateFreshness.led = true;
-            
         default:
             break
         }
     }
-    
-    
 }
 
 class BluetoothManager: NSObject, CBCentralManagerDelegate, ObservableObject {
