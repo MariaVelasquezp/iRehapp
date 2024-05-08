@@ -100,7 +100,7 @@ struct ManoCompContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                            FelicTerContent()
+                            //FelicTerContent(stimParams: self.$stimParams, module: module)
                         }
                         .padding(.bottom, 40)
                     }

@@ -116,12 +116,18 @@ struct TerapiasContent: View {
                 
                 Button(action: {
                     if globalState.terapiaCompletaSelected {
-                        self.navigateToNewViewCom = true
-                    } else if globalState.terapiaSimplificadaSelected {
-                        self.navigateToNewViewSim = true
-                    } else if globalState.terapiaLibreSelected {
-                        self.navigateToNewViewLib = true
-                    }
+                            let newFrequency: UInt8 = 0x01
+                            module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x01
+                            self.navigateToNewViewCom = true
+                        } else if globalState.terapiaSimplificadaSelected {
+                            let newFrequency: UInt8 = 0x01
+                            module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x01
+                            self.navigateToNewViewSim = true
+                        } else if globalState.terapiaLibreSelected {
+                            self.navigateToNewViewLib = true
+                        }
                 }) {
                     Text("Iniciar")
                         .font(.custom("Poppins", size: 25))
@@ -137,7 +143,7 @@ struct TerapiasContent: View {
                     IndiceCompContent()
                 }
                 .fullScreenCover(isPresented: $navigateToNewViewSim) {
-                    IndiceSimpContent()
+                    IndiceSimpContent(stimParams: self.$stimParams, module: module)
                 }
                 .fullScreenCover(isPresented: $navigateToNewViewLib) {
                     MenuEjercicios(stimParams: self.$stimParams, module: module)

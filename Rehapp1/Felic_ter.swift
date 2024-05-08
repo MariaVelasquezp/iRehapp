@@ -11,6 +11,8 @@ import SwiftUI
 struct FelicTerContent: View {
     @ObservedObject var globalState = GlobalState.shared
     @State private var navigateToTerapias = false
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
 
     var body: some View {
         VStack(spacing: 0) {
@@ -50,7 +52,7 @@ struct FelicTerContent: View {
                 }
                 .padding(.bottom, 100)
                 .fullScreenCover(isPresented: $navigateToTerapias) {
-                    //TerapiasContent()
+                    TerapiasContent(stimParams: self.$stimParams, module: module)
                 }
             }
             .padding(.horizontal, 30)
@@ -63,8 +65,8 @@ struct FelicTerContent: View {
 
 
 
-struct FelicTerView_Previews: PreviewProvider {
+/*struct FelicTerView_Previews: PreviewProvider {
     static var previews: some View {
         FelicTerContent()
     }
-}
+}*/

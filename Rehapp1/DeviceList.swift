@@ -38,12 +38,9 @@ struct SignalStrengthIndicator: View {
     }
 }
 
-
 struct DeviceList: View {
     @StateObject var bleManager = BluetoothManager()
     @Binding var stimParams: StimParameters
-//    @ObservedObject private var bleManager = BluetoothScanner()
-//    @State private var searchText = ""
 
     var body: some View {
         VStack {
@@ -52,7 +49,7 @@ struct DeviceList: View {
                 List(bleManager.discoveredPeripherals,
                      id: \.peripheral.identifier) { module in
                     NavigationLink(
-                        destination: MenuEjercicios(stimParams: self.$stimParams, module: module)
+                        destination: TerapiasContent(stimParams: self.$stimParams, module: module)
                             .border(Color.gray)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .onAppear(){

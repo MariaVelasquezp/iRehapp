@@ -9,7 +9,7 @@
 See the License.txt file for this sample’s licensing information.
 */
 
-import SwiftUI
+/*import SwiftUI
 
 struct ModuleControl: View {
     @ObservedObject var module: DiscoveredPeripheral
@@ -152,4 +152,4 @@ struct ModuleControl: View {
         }
         .environmentObject(bleManager)
     }
-}
+}*/

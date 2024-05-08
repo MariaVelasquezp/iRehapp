@@ -14,6 +14,8 @@ struct IndiceSimpContent: View {
     @State private var isTextVisible = true
     @State private var isBackgroundWhite = true
     @State private var player = AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "INDICE", ofType: "mp4")!))
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
     
     var body: some View {
         ZStack {
@@ -74,7 +76,9 @@ struct IndiceSimpContent: View {
                     
                     HStack(spacing: 0) {
                         Button(action: {
-                            // Acción al detener
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Detener")
                                 .font(.custom("Sarabun", size: 20))
@@ -90,6 +94,9 @@ struct IndiceSimpContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
+                            let newFrequency: UInt8 = 0x0A // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x0A
                         }) {
                             Text("Siguiente ejercicio")
                                 .font(.custom("Sarabun", size: 16))
@@ -100,7 +107,7 @@ struct IndiceSimpContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                            ManoSimpContent()
+                            ManoSimpContent(stimParams: self.$stimParams, module: module)
                         }
                         .padding(.bottom, 40)
                     }
@@ -117,8 +124,8 @@ struct IndiceSimpContent: View {
     }
 }
 
-struct IndiceSimpContentView_Previews: PreviewProvider {
+/*struct IndiceSimpContentView_Previews: PreviewProvider {
     static var previews: some View {
         IndiceSimpContent()
     }
-}
+}*/

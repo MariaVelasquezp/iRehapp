@@ -10,7 +10,7 @@
  */
 
 
-import SwiftUI
+/*import SwiftUI
 
 let LEDFrequencies = [1, 2, 4, 10]
 let stimCurrents = [UInt8](0...100)
@@ -100,4 +100,4 @@ struct ModuleDetail: View {
         
         
     }
-}
+}*/

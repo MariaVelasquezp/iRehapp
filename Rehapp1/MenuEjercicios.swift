@@ -187,7 +187,7 @@ struct MenuEjercicios: View {
                         }
                     }
                     .fullScreenCover(isPresented: $isExerciseFinished) {
-                        FelicTerContent()
+                        FelicTerContent(stimParams: self.$stimParams, module: module)
                     }
                 }
                 .padding(.bottom, 20)
