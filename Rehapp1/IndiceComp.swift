@@ -14,6 +14,8 @@ struct IndiceCompContent: View {
     @State private var isTextVisible = true
     @State private var isBackgroundWhite = true
     @State private var player = AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "INDICE", ofType: "mp4")!))
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
     
     var body: some View {
         ZStack {
@@ -74,7 +76,9 @@ struct IndiceCompContent: View {
                     
                     HStack(spacing: 0) {
                         Button(action: {
-                            // Acción al detener
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Detener")
                                 .font(.custom("Sarabun", size: 20))
@@ -90,6 +94,9 @@ struct IndiceCompContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
+                            let newFrequency: UInt8 = 0x02 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x02
                         }) {
                             Text("Siguiente ejercicio")
                                 .font(.custom("Sarabun", size: 16))
@@ -100,7 +107,7 @@ struct IndiceCompContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                            MedioCompContent()
+                            MedioCompContent(stimParams: self.$stimParams, module: module)
                         }
                         .padding(.bottom, 40)
                     }
@@ -117,8 +124,8 @@ struct IndiceCompContent: View {
     }
 }
 
-struct IndiceCompContentView_Previews: PreviewProvider {
+/*struct IndiceCompContentView_Previews: PreviewProvider {
     static var previews: some View {
         IndiceCompContent()
     }
-}
+}*/

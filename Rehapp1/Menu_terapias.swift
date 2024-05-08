@@ -140,7 +140,7 @@ struct TerapiasContent: View {
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(UIColor(red: 0.019, green: 0.592, blue: 0.686, alpha: 1.0)), lineWidth: 1))
                 
                 .fullScreenCover(isPresented: $navigateToNewViewCom) {
-                    IndiceCompContent()
+                    IndiceCompContent(stimParams: self.$stimParams, module: module)
                 }
                 .fullScreenCover(isPresented: $navigateToNewViewSim) {
                     IndiceSimpContent(stimParams: self.$stimParams, module: module)

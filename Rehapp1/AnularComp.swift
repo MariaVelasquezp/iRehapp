@@ -14,6 +14,8 @@ struct AnularCompContent: View {
     @State private var isTextVisible = true
     @State private var isBackgroundWhite = true
     @State private var player = AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "ANULAR", ofType: "mp4")!))
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
     
     var body: some View {
         ZStack {
@@ -74,7 +76,9 @@ struct AnularCompContent: View {
                     
                     HStack(spacing: 0) {
                         Button(action: {
-                            // Acción al detener
+                            let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x00
                         }) {
                             Text("Detener")
                                 .font(.custom("Sarabun", size: 20))
@@ -90,6 +94,9 @@ struct AnularCompContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
+                            let newFrequency: UInt8 = 0x04// Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x04
                         }) {
                             Text("Siguiente ejercicio")
                                 .font(.custom("Sarabun", size: 16))
@@ -100,7 +107,7 @@ struct AnularCompContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                            MeniqueCompContent()
+                            MeniqueCompContent(stimParams: self.$stimParams, module: module)
                         }
                         .padding(.bottom, 40)
                     }
@@ -118,9 +125,9 @@ struct AnularCompContent: View {
 }
 
 
-struct AnularCompContentView_Previews: PreviewProvider {
+/*struct AnularCompContentView_Previews: PreviewProvider {
     static var previews: some View {
         AnularCompContent()
     }
-}
+}*/
 
