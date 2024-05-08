@@ -123,4 +123,3 @@ struct ManoCompContentView_Previews: PreviewProvider {
         ManoCompContent()
     }
 }
-

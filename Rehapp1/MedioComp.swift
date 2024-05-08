@@ -123,4 +123,3 @@ struct MedioCompContentView_Previews: PreviewProvider {
         MedioCompContent()
     }
 }
-

@@ -8,21 +8,21 @@
 import UIKit
 import SwiftUI
 
-import SwiftUI
-
 struct MainEntrance: View {
     @ObservedObject var globalState = GlobalState.shared
+    @Binding var stimParams: StimParameters
     
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(.all)
-            CustomView()
+            CustomView(stimParams: $stimParams)
         }
     }
 }
 
 struct CustomView: View {
     @State private var isDeviceListPresented = false
+    @Binding var stimParams: StimParameters
     
     var body: some View {
         VStack(spacing: 0) {
@@ -53,7 +53,7 @@ struct CustomView: View {
                 }
                 .offset(x: 0, y: 30)
                 .fullScreenCover(isPresented: $isDeviceListPresented) {
-                    DeviceList()
+                    DeviceList(stimParams: $stimParams)
                 }
             }
             .padding(.horizontal, 30)
@@ -65,8 +65,8 @@ struct CustomView: View {
     }
 }
 
-struct CustomView_Previews: PreviewProvider {
+/*struct CustomView_Previews: PreviewProvider {
     static var previews: some View {
         CustomView()
     }
-}
+}*/

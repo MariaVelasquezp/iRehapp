@@ -27,13 +27,13 @@
 		AB60688A2BDDA48000FC73F7 /* MANOCERRADA.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AB6068832BDDA48000FC73F7 /* MANOCERRADA.mp4 */; };
 		AB60688B2BDDA48000FC73F7 /* MENIQUE.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AB6068842BDDA48000FC73F7 /* MENIQUE.mp4 */; };
 		AB60688C2BDDA48000FC73F7 /* WhatsApp Image 2024-02-08 at 8.22.48 PM.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AB6068852BDDA48000FC73F7 /* WhatsApp Image 2024-02-08 at 8.22.48 PM.jpeg */; };
+		AB6D77362BE72E5700B554D5 /* ModuleDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6D77352BE72E5700B554D5 /* ModuleDetail.swift */; };
 		ABA1A5BB2B582ADA003189A2 /* Rehapp1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1A5BA2B582ADA003189A2 /* Rehapp1App.swift */; };
 		ABA1A5BF2B582ADB003189A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABA1A5BE2B582ADB003189A2 /* Assets.xcassets */; };
 		ABA1A5C22B582ADB003189A2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABA1A5C12B582ADB003189A2 /* Preview Assets.xcassets */; };
 		ABA1A5C92B582B0B003189A2 /* BLEManagerClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1A5C82B582B0B003189A2 /* BLEManagerClass.swift */; };
 		ABA1A5CB2B582B56003189A2 /* DeviceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1A5CA2B582B56003189A2 /* DeviceList.swift */; };
 		ABA1A5CD2B582B85003189A2 /* ModuleControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1A5CC2B582B85003189A2 /* ModuleControl.swift */; };
-		ABA1A5CF2B582BBC003189A2 /* ModuleDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1A5CE2B582BBC003189A2 /* ModuleDetail.swift */; };
 		ABA857872BB91DAD00C32B8B /* MenuEjercicios.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA857862BB91DAD00C32B8B /* MenuEjercicios.swift */; };
 		ABADFBAE2BDDE47400EB4280 /* IndiceLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABADFBAD2BDDE47400EB4280 /* IndiceLib.swift */; };
 		ABADFBB02BDDE54C00EB4280 /* ManoSimp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABADFBAF2BDDE54C00EB4280 /* ManoSimp.swift */; };
@@ -65,6 +65,7 @@
 		AB6068832BDDA48000FC73F7 /* MANOCERRADA.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MANOCERRADA.mp4; sourceTree = "<group>"; };
 		AB6068842BDDA48000FC73F7 /* MENIQUE.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MENIQUE.mp4; sourceTree = "<group>"; };
 		AB6068852BDDA48000FC73F7 /* WhatsApp Image 2024-02-08 at 8.22.48 PM.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WhatsApp Image 2024-02-08 at 8.22.48 PM.jpeg"; sourceTree = "<group>"; };
+		AB6D77352BE72E5700B554D5 /* ModuleDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDetail.swift; sourceTree = "<group>"; };
 		ABA1A5B72B582ADA003189A2 /* iRehapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iRehapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABA1A5BA2B582ADA003189A2 /* Rehapp1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rehapp1App.swift; sourceTree = "<group>"; };
 		ABA1A5BE2B582ADB003189A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -72,7 +73,6 @@
 		ABA1A5C82B582B0B003189A2 /* BLEManagerClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManagerClass.swift; sourceTree = "<group>"; };
 		ABA1A5CA2B582B56003189A2 /* DeviceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceList.swift; sourceTree = "<group>"; };
 		ABA1A5CC2B582B85003189A2 /* ModuleControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleControl.swift; sourceTree = "<group>"; };
-		ABA1A5CE2B582BBC003189A2 /* ModuleDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDetail.swift; sourceTree = "<group>"; };
 		ABA1A5D02B582D5D003189A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABA857862BB91DAD00C32B8B /* MenuEjercicios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEjercicios.swift; sourceTree = "<group>"; };
 		ABADFBAD2BDDE47400EB4280 /* IndiceLib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndiceLib.swift; sourceTree = "<group>"; };
@@ -137,6 +137,7 @@
 				ABA1A5D02B582D5D003189A2 /* Info.plist */,
 				ABF006CF2BB47D0E001D8543 /* Storyboard.storyboard */,
 				ABA1A5BA2B582ADA003189A2 /* Rehapp1App.swift */,
+				AB6D77352BE72E5700B554D5 /* ModuleDetail.swift */,
 				ABA1A5C82B582B0B003189A2 /* BLEManagerClass.swift */,
 				ABF006CD2BB47A17001D8543 /* Main_entrance.swift */,
 				ABA1A5CA2B582B56003189A2 /* DeviceList.swift */,
@@ -156,7 +157,6 @@
 				AB537A692BDDEEB6000CD1D1 /* ManoLib.swift */,
 				AB5E702A2BBB48D70047E0A0 /* Felic_ter.swift */,
 				ABA1A5CC2B582B85003189A2 /* ModuleControl.swift */,
-				ABA1A5CE2B582BBC003189A2 /* ModuleDetail.swift */,
 				ABA1A5BE2B582ADB003189A2 /* Assets.xcassets */,
 				ABA1A5C02B582ADB003189A2 /* Preview Content */,
 			);
@@ -267,10 +267,10 @@
 				ABADFBB02BDDE54C00EB4280 /* ManoSimp.swift in Sources */,
 				ABA1A5CD2B582B85003189A2 /* ModuleControl.swift in Sources */,
 				AB5E702B2BBB48D70047E0A0 /* Felic_ter.swift in Sources */,
+				AB6D77362BE72E5700B554D5 /* ModuleDetail.swift in Sources */,
 				ABADFBB82BDDE8FC00EB4280 /* MeniqueLib.swift in Sources */,
 				AB537A6A2BDDEEB6000CD1D1 /* ManoLib.swift in Sources */,
 				ABA1A5C92B582B0B003189A2 /* BLEManagerClass.swift in Sources */,
-				ABA1A5CF2B582BBC003189A2 /* ModuleDetail.swift in Sources */,
 				AB537A6C2BDDEFB3000CD1D1 /* IndiceSimp.swift in Sources */,
 				ABADFBAE2BDDE47400EB4280 /* IndiceLib.swift in Sources */,
 				ABA1A5CB2B582B56003189A2 /* DeviceList.swift in Sources */,

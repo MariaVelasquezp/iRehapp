@@ -50,7 +50,7 @@ struct FelicTerContent: View {
                 }
                 .padding(.bottom, 100)
                 .fullScreenCover(isPresented: $navigateToTerapias) {
-                    TerapiasContent()
+                    //TerapiasContent()
                 }
             }
             .padding(.horizontal, 30)

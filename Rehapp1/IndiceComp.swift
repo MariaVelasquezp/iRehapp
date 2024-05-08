@@ -122,4 +122,3 @@ struct IndiceCompContentView_Previews: PreviewProvider {
         IndiceCompContent()
     }
 }
-

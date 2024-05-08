@@ -124,4 +124,3 @@ struct AnularCompContentView_Previews: PreviewProvider {
     }
 }
 
-

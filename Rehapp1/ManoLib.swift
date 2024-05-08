@@ -100,7 +100,7 @@ struct ManoLibreContent: View {
                                 .cornerRadius(10)
                         }
                         .fullScreenCover(isPresented: $isExerciseFinished) {
-                            MenuEjercicios()
+                       //     MenuEjercicios()
                         }
                         .padding(.bottom, 40)
                     }

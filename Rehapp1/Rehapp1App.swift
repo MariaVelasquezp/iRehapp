@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
-
 @main
 struct Rehapp1App: App {
+    @State var stimParams = StimParameters() // Declaración de stimParams como State
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                MainEntrance()
+                MainEntrance(stimParams: $stimParams) // Pasando stimParams a MainEntrance
             }
         }
     }
 }
-

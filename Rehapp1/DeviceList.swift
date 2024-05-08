@@ -38,32 +38,46 @@ struct SignalStrengthIndicator: View {
     }
 }
 
+
 struct DeviceList: View {
     @StateObject var bleManager = BluetoothManager()
-    @State private var isTerapiasContentPresented = false
+    @Binding var stimParams: StimParameters
+//    @ObservedObject private var bleManager = BluetoothScanner()
+//    @State private var searchText = ""
 
     var body: some View {
         VStack {
             NavigationView {
                 // List of discovered peripherals
-                List(bleManager.discoveredPeripherals, id: \.peripheral.identifier) { module in
-                    HStack {
-                        Text("Ampfreq")
-                            .fontWeight(.bold)
-                            .frame(width: 225, alignment: .leading)
-                            .font(.title2)
-                        VStack {
-                            SignalStrengthIndicator(rssi: module.rssi)
-                            Text("\(module.rssi)dB").font(.subheadline)
+                List(bleManager.discoveredPeripherals,
+                     id: \.peripheral.identifier) { module in
+                    NavigationLink(
+                        destination: MenuEjercicios(stimParams: self.$stimParams, module: module)
+                            .border(Color.gray)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .onAppear(){
+                                bleManager.connectToDevice(module: module)
+                            }
+                            .onDisappear(){
+                                bleManager.disconnectFromDevice(module: module)
+                                module.connectionState = ConnectionState.not_connected
+                                module.scanningState = ScanningState.not_connected
+                            }
+                    , label: {
+                        HStack {
+                            Text("StiMo Module: \(module.moduleID)")
+                                .fontWeight(.bold)
+                                .frame(width: 225, alignment: .leading)
+                                .font(.title2)
+                            VStack {
+                                SignalStrengthIndicator(rssi: module.rssi)
+                                Text("\(module.rssi)dB").font(.subheadline)
+                            }
                         }
-                        Spacer()
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        isTerapiasContentPresented = true
-                    }
+
+                    })
                 }
-                .navigationTitle("Módulos descubiertos")
+                .navigationTitle("Discovered Modules")
             }
             .environmentObject(bleManager)
 
@@ -76,9 +90,9 @@ struct DeviceList: View {
                 }
             }) {
                 if bleManager.isScanning {
-                    Text("Dejar de escanear")
+                    Text("Stop Scanning")
                 } else {
-                    Text("Escanear dispositivos")
+                    Text("Scan for Devices")
                 }
             }
             // Button looks cooler this way on iOS
@@ -86,15 +100,7 @@ struct DeviceList: View {
             .background(bleManager.isScanning ? Color.red : Color.blue)
             .foregroundColor(Color.white)
             .cornerRadius(5.0)
-        }
-        .fullScreenCover(isPresented: $isTerapiasContentPresented) {
-            TerapiasContent()
-        }
-    }
-}
 
-struct DeviceList_Previews: PreviewProvider {
-    static var previews: some View {
-        DeviceList()
+        }
     }
 }

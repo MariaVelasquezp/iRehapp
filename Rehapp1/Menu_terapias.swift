@@ -22,6 +22,9 @@ struct TerapiasContent: View {
     @State private var navigateToNewViewCom = false
     @State private var navigateToNewViewSim = false
     @State private var navigateToNewViewLib = false
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
+    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -137,7 +140,7 @@ struct TerapiasContent: View {
                     IndiceSimpContent()
                 }
                 .fullScreenCover(isPresented: $navigateToNewViewLib) {
-                    MenuEjercicios()
+                    MenuEjercicios(stimParams: self.$stimParams, module: module)
                 }
             }
             .padding(.horizontal, 30)
@@ -150,8 +153,8 @@ struct TerapiasContent: View {
      
     }
 }
-struct TerapiasView_Previews: PreviewProvider {
+/*struct TerapiasView_Previews: PreviewProvider {
     static var previews: some View {
         TerapiasContent()
     }
-}
+}*/

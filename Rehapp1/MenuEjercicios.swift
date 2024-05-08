@@ -8,11 +8,30 @@
 import Foundation
 import SwiftUI
 
+func getMinValue(for frequency: Int) -> UInt8 {
+    var minValue: UInt8 = 0x00
+    switch frequency {
+    case 1:
+        minValue = 0x01
+    case 2:
+        minValue = 0x02
+    case 3:
+        minValue = 0x04
+    case 4:
+        minValue = 0x08
+    case 5:
+        minValue = 0x0A
+    default:
+        break
+    }
+    
+    return minValue
+}
+    
 struct MenuEjercicios: View {
     @ObservedObject var globalState = GlobalState.shared
     @State private var isDeviceListPresented = false
     @State private var isExerciseFinished = false
-    
     // Variables de estado para controlar la navegación a diferentes vistas
     @State private var navigateToIndice = false
     @State private var navigateToCorazon = false
@@ -20,6 +39,8 @@ struct MenuEjercicios: View {
     @State private var navigateToMeñique = false
     @State private var navigateToMano = false
     @State private var navigateToManoLibre = false
+    @Binding var stimParams: StimParameters
+    @ObservedObject var module: DiscoveredPeripheral
     
     var body: some View {
         ZStack {
@@ -38,7 +59,12 @@ struct MenuEjercicios: View {
                 VStack(spacing: 50) {
                     HStack(spacing: 20) {
                         VStack {
-                            Button(action: { self.navigateToIndice = true }) {
+                            Button(action: { 
+                                self.navigateToIndice = true
+                                let newFrequency: UInt8 = 0x01 // Definir la nueva frecuencia deseada aquí
+                                    module.updateFrequency(new_frequency: newFrequency)
+                                self.stimParams.frequency = 0x01
+                            }) {
                                 Image("Indice")
                                     .resizable()
                                     .frame(width: 168, height: 112)
@@ -50,7 +76,12 @@ struct MenuEjercicios: View {
                                 .multilineTextAlignment(.center)
                         }
                         VStack {
-                            Button(action: { self.navigateToCorazon = true }) {
+                            Button(action: { 
+                                self.navigateToCorazon = true
+                                let newFrequency: UInt8 = 0x02 // Definir la nueva frecuencia deseada aquí
+                                    module.updateFrequency(new_frequency: newFrequency)
+                                self.stimParams.frequency = 0x02
+                            }) {
                                 Image("Medio")
                                     .resizable()
                                     .frame(width: 168, height: 112)
@@ -64,7 +95,11 @@ struct MenuEjercicios: View {
                     }
                     HStack(spacing: 20) {
                         VStack {
-                            Button(action: { self.navigateToAnular = true }) {
+                            Button(action: {
+                                let newFrequency: UInt8 = 0x04 // Definir la nueva frecuencia deseada aquí
+                                    module.updateFrequency(new_frequency: newFrequency)
+                                   self.stimParams.frequency = 0x04 // Actualizar stimParams.frequency
+                            }) {
                                 Image("Anular")
                                     .resizable()
                                     .frame(width: 168, height: 112)
@@ -76,7 +111,12 @@ struct MenuEjercicios: View {
                                 .multilineTextAlignment(.center)
                         }
                         VStack {
-                            Button(action: { self.navigateToMeñique = true }) {
+                            Button(action: {
+                                self.navigateToMeñique = true
+                                let newFrequency: UInt8 = 0x08 // Definir la nueva frecuencia deseada aquí
+                                    module.updateFrequency(new_frequency: newFrequency)
+                                self.stimParams.frequency = 0x08
+                            }) {
                                 Image("Menique")
                                     .resizable()
                                     .frame(width: 168, height: 112)
@@ -89,7 +129,12 @@ struct MenuEjercicios: View {
                         }
                     }
                     VStack {
-                        Button(action: { self.navigateToMano = true }) {
+                        Button(action: { 
+                            self.navigateToMano = true
+                            let newFrequency: UInt8 = 0x0A // Definir la nueva frecuencia deseada aquí
+                                module.updateFrequency(new_frequency: newFrequency)
+                            self.stimParams.frequency = 0x0A
+                        }) {
                             Image("Mano")
                                 .resizable()
                                 .frame(width: 168, height: 112)
@@ -106,7 +151,12 @@ struct MenuEjercicios: View {
                 Spacer()
                 
                 HStack(spacing: 35) {
-                    Button(action: {isDeviceListPresented = true}) {
+                    Button(action: {
+                        isDeviceListPresented = true
+                        let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                            module.updateFrequency(new_frequency: newFrequency)
+                        self.stimParams.frequency = 0x00
+                    }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color(UIColor(red: 0.2941176471, green: 0.1333333333, blue: 0.4784313725, alpha: 1)))
@@ -116,10 +166,15 @@ struct MenuEjercicios: View {
                         }
                     }
                     .fullScreenCover(isPresented: $isDeviceListPresented) {
-                        DeviceList()
+                        //DeviceList( stimParams: StimParameters)
                     }
                     
-                    Button(action: {isExerciseFinished = true}) {
+                    Button(action: {
+                        isExerciseFinished = true
+                        let newFrequency: UInt8 = 0x00 // Definir la nueva frecuencia deseada aquí
+                            module.updateFrequency(new_frequency: newFrequency)
+                        self.stimParams.frequency = 0x00
+                    }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color(UIColor(red: 0.019, green: 0.592, blue: 0.686, alpha: 1.0)))
@@ -133,6 +188,10 @@ struct MenuEjercicios: View {
                     }
                 }
                 .padding(.bottom, 20)
+            }
+            .onReceive([self.stimParams.frequency].publisher.first()) { newFrequency in
+                let sendingFrequency = getMinValue(for: newFrequency)
+                print("Sending frequency: 0x\(String(format: "%02X", sendingFrequency))")
             }
             .padding(30)
         }
@@ -152,10 +211,11 @@ struct MenuEjercicios: View {
             ManoLibreContent()
         }
     }
+    
 }
 
-struct MenuEjercicios_Previews: PreviewProvider {
+/*struct MenuEjercicios_Previews: PreviewProvider {
     static var previews: some View {
         MenuEjercicios()
     }
-}
+}*/
