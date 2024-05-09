@@ -17,7 +17,6 @@ private struct ModuleUUIDs {
 
 struct StimParameters:Equatable {
     var led: UInt16 = 0
-   // var current: UInt8 = 0
     var frequency: Int = 0
 }
 

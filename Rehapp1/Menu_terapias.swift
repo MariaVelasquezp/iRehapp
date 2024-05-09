@@ -152,6 +152,7 @@ struct TerapiasContent: View {
             .padding(.horizontal, 30)
             .padding(.bottom, 100)
         }
+        .edgesIgnoringSafeArea(.all) // Esta línea hace que la vista esté en pantalla completa
         .frame(width: 390, height: 844)
         .background(Color.white)
         .cornerRadius(30)
@@ -159,6 +160,7 @@ struct TerapiasContent: View {
      
     }
 }
+
 /*struct TerapiasView_Previews: PreviewProvider {
     static var previews: some View {
         TerapiasContent()

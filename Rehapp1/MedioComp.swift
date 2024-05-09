@@ -94,9 +94,9 @@ struct MedioCompContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
-                            let newFrequency: UInt8 = 0x04 // Definir la nueva frecuencia deseada aquí
+                            let newFrequency: UInt8 = 0x03 // Definir la nueva frecuencia deseada aquí
                                 module.updateFrequency(new_frequency: newFrequency)
-                            self.stimParams.frequency = 0x04
+                            self.stimParams.frequency = 0x03
                         }) {
                             Text("Siguiente ejercicio")
                                 .font(.custom("Sarabun", size: 16))

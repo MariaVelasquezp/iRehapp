@@ -94,9 +94,9 @@ struct IndiceSimpContent: View {
                         
                         Button(action: {
                             isExerciseFinished = true
-                            let newFrequency: UInt8 = 0x0A // Definir la nueva frecuencia deseada aquí
+                            let newFrequency: UInt8 = 0x05 // Definir la nueva frecuencia deseada aquí
                                 module.updateFrequency(new_frequency: newFrequency)
-                            self.stimParams.frequency = 0x0A
+                            self.stimParams.frequency = 0x05
                         }) {
                             Text("Siguiente ejercicio")
                                 .font(.custom("Sarabun", size: 16))

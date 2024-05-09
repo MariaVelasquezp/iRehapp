@@ -16,11 +16,11 @@ func getMinValue(for frequency: Int) -> UInt8 {
     case 2:
         minValue = 0x02
     case 3:
-        minValue = 0x04
+        minValue = 0x03
     case 4:
-        minValue = 0x08
+        minValue = 0x04
     case 5:
-        minValue = 0x0A
+        minValue = 0x05
     default:
         break
     }
@@ -60,7 +60,7 @@ struct MenuEjercicios: View {
                 VStack(spacing: 50) {
                     HStack(spacing: 20) {
                         VStack {
-                            Button(action: { 
+                            Button(action: {
                                 self.navigateToIndice = true
                                 let newFrequency: UInt8 = 0x01 // Definir la nueva frecuencia deseada aquí
                                     module.updateFrequency(new_frequency: newFrequency)
@@ -77,7 +77,7 @@ struct MenuEjercicios: View {
                                 .multilineTextAlignment(.center)
                         }
                         VStack {
-                            Button(action: { 
+                            Button(action: {
                                 self.navigateToCorazon = true
                                 let newFrequency: UInt8 = 0x02 // Definir la nueva frecuencia deseada aquí
                                     module.updateFrequency(new_frequency: newFrequency)
@@ -98,9 +98,9 @@ struct MenuEjercicios: View {
                         VStack {
                             Button(action: {
                                 self.navigateToAnular = true
-                                let newFrequency: UInt8 = 0x04 // Definir la nueva frecuencia deseada aquí
+                                let newFrequency: UInt8 = 0x03 // Definir la nueva frecuencia deseada aquí
                                     module.updateFrequency(new_frequency: newFrequency)
-                                   self.stimParams.frequency = 0x04 // Actualizar stimParams.frequency
+                                   self.stimParams.frequency = 0x03 // Actualizar stimParams.frequency
                             }) {
                                 Image("Anular")
                                     .resizable()
@@ -115,9 +115,9 @@ struct MenuEjercicios: View {
                         VStack {
                             Button(action: {
                                 self.navigateToMeñique = true
-                                let newFrequency: UInt8 = 0x08 
+                                let newFrequency: UInt8 = 0x04
                                     module.updateFrequency(new_frequency: newFrequency)
-                                self.stimParams.frequency = 0x08
+                                self.stimParams.frequency = 0x04
                             }) {
                                 Image("Menique")
                                     .resizable()
@@ -131,11 +131,11 @@ struct MenuEjercicios: View {
                         }
                     }
                     VStack {
-                        Button(action: { 
+                        Button(action: {
                             self.navigateToMano = true
-                            let newFrequency: UInt8 = 0x0A // Definir la nueva frecuencia deseada aquí
+                            let newFrequency: UInt8 = 0x05 // Definir la nueva frecuencia deseada aquí
                                 module.updateFrequency(new_frequency: newFrequency)
-                            self.stimParams.frequency = 0x0A
+                            self.stimParams.frequency = 0x05
                         }) {
                             Image("Mano")
                                 .resizable()
@@ -169,7 +169,7 @@ struct MenuEjercicios: View {
                         }
                     }
                     .fullScreenCover(isPresented: $isDeviceListPresented) {
-                        DeviceList(stimParams: self.$stimParams)
+                        DeviceList(stimParams: self.$stimParams) //, module: module)
                     }
                     
                     Button(action: {
