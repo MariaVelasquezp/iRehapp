@@ -156,8 +156,6 @@ struct TerapiasContent: View {
         .frame(width: 390, height: 844)
         .background(Color.white)
         .cornerRadius(30)
-        
-     
     }
 }
 

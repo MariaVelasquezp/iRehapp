@@ -41,6 +41,8 @@ struct SignalStrengthIndicator: View {
 struct DeviceList: View {
     @StateObject var bleManager = BluetoothManager()
     @Binding var stimParams: StimParameters
+    @State private var showTerapiasContent = false // Variable de estado para controlar la presentación de TerapiasContent en pantalla completa
+    @State private var selectedModule: DiscoveredPeripheral? // Variable para almacenar el dispositivo seleccionado
 
     var body: some View {
         VStack {
@@ -49,30 +51,23 @@ struct DeviceList: View {
                 List(bleManager.discoveredPeripherals,
                      id: \.peripheral.identifier) { module in
                     NavigationLink(
-                        destination: TerapiasContent(stimParams: self.$stimParams, module: module)
-                            .border(Color.gray)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .onAppear(){
-                                bleManager.connectToDevice(module: module)
+                        destination: EmptyView(), // Destino vacío para evitar la navegación automática
+                        label: {
+                            HStack {
+                                Text("StiMo Module: \(module.moduleID)")
+                                    .fontWeight(.bold)
+                                    .frame(width: 225, alignment: .leading)
+                                    .font(.title2)
+                                VStack {
+                                    SignalStrengthIndicator(rssi: module.rssi)
+                                    Text("\(module.rssi)dB").font(.subheadline)
+                                }
                             }
-                            .onDisappear(){
-                                bleManager.disconnectFromDevice(module: module)
-                                module.connectionState = ConnectionState.not_connected
-                                module.scanningState = ScanningState.not_connected
-                            }
-                    , label: {
-                        HStack {
-                            Text("StiMo Module: \(module.moduleID)")
-                                .fontWeight(.bold)
-                                .frame(width: 225, alignment: .leading)
-                                .font(.title2)
-                            VStack {
-                                SignalStrengthIndicator(rssi: module.rssi)
-                                Text("\(module.rssi)dB").font(.subheadline)
-                            }
-                        }
-
-                    })
+                        })
+                    .onTapGesture {
+                        selectedModule = module // Almacenar el módulo seleccionado al hacer clic
+                        self.showTerapiasContent = true // Abrir TerapiasContent en pantalla completa
+                    }
                 }
                 .navigationTitle("Discovered Modules")
             }
@@ -98,6 +93,19 @@ struct DeviceList: View {
             .foregroundColor(Color.white)
             .cornerRadius(5.0)
 
+        }
+        .fullScreenCover(isPresented: $showTerapiasContent) {
+            if let module = selectedModule {
+                TerapiasContent(globalState: GlobalState.shared, stimParams: self.$stimParams, module: module)
+                    .onAppear {
+                        bleManager.connectToDevice(module: module) // Conectar al dispositivo al mostrar TerapiasContent
+                    }
+                    .onDisappear {
+                        bleManager.disconnectFromDevice(module: module) // Desconectar del dispositivo al ocultar TerapiasContent
+                        module.connectionState = ConnectionState.not_connected
+                        module.scanningState = ScanningState.not_connected
+                    }
+            }
         }
     }
 }
